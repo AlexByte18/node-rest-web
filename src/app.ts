@@ -1,6 +1,8 @@
 // import fs from 'fs';
 // import http from 'http';
 
+import { envs } from "./config/envs";
+import { AppRoutes } from "./presentation/routes";
 import { Server } from "./presentation/server";
 
 // const server = http.createServer((req, res) => {
@@ -26,7 +28,11 @@ import { Server } from "./presentation/server";
 })();
 
 function main() {
-    const server = new Server();
+    const server = new Server({
+        port: envs.PORT,
+        public_path: envs.PUBLIC_PATH,
+        routes: AppRoutes.routes
+    });
 
     server.start();
 }
