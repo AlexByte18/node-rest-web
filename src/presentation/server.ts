@@ -2,7 +2,7 @@ import { Router } from 'express';
 import express from 'express';
 import path from 'path';
 import { envs } from '../config/envs';
-
+import compression from 'compression';
 
 interface Options {
     port: number,
@@ -28,7 +28,7 @@ export class Server {
 
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended: true}));
-
+        this.app.use(compression());
         this.app.use( express.static(envs.PUBLIC_PATH));
 
         this.app.use(this.routes);
