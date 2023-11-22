@@ -6,16 +6,17 @@ import compression from 'compression';
 
 interface Options {
     port: number,
-    public_path: string,
+    public_path?: string,
     routes: Router
 }
 
 export class Server {
 
-    private app = express();
+    public readonly app = express();
     private readonly port: number;
-    private readonly publicPath: string;
+    private readonly publicPath?: string;
     private readonly routes: Router;
+    private serverListener?: any;
 
     constructor(options: Options) {
         const {port, public_path = 'public', routes} = options;
@@ -41,9 +42,14 @@ export class Server {
             res.sendFile(indexPath);
         });
 
-        this.app.listen(envs.PORT, () => {
+        this.serverListener = this.app.listen(envs.PORT, () => {
             console.log('server running on port 3000');
         });
+
+    }
+    
+    public close () {
+        this.serverListener?.close();
     }
 
 }
